@@ -1,0 +1,143 @@
+#:import Daikin1 __main__.Daikin1
+
+ShowcaseScreen:
+    name: 'infor'
+    fullscreen: True
+    FloatLayout
+        CGridLayout:
+            id: grid
+            rows: 4
+            cols: 4
+            Button:
+                id:lbl_zone1
+                text:"Zone 2: {}\nNhiệt Độ :{}".format(Daikin1["Zone2"]["Name"],Daikin1["Zone2"]["Setpoint"])
+                color: 1,0,1,1
+                #background_color: (0.0, 1.0, 1.0, 0.0) if Daikin1["Zone2"]["Using"]==1 else (1.0,1.0,1.0)
+                disabled: False if Daikin1["Zone2"]["Using"]==0 else True
+                on_release: app.button_press("1")
+
+            Button:
+                id:lbl_zone2
+                text:"Zone 2: {}\nNhiệt Độ :{}".format(Daikin1["Zone2"]["Name"],Daikin1["Zone2"]["Setpoint"])
+                color: 1,0,1,1
+               # background_color: (0.0, 1.0, 1.0, 0.0) if Daikin1["Zone2"]["Using"]==1 else (1.0,1.0,1.0)
+                disabled: False if Daikin1["Zone2"]["Using"]==0 else True
+                on_release: app.button_press("2")
+
+            Button:
+                id:lbl_zone3
+                text:"Zone 3: {}\nNhiệt Độ :{}".format(Daikin1["Zone3"]["Name"],Daikin1["Zone3"]["Setpoint"])
+                color: 1,0,1,1
+                #background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone3"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone3"]["Using"]==0 else False
+                on_release: app.button_press("3")
+            Button:
+                id:lbl_zone4
+                text:"Zone 4: {}\nNhiệt Độ :{}".format(Daikin1["Zone4"]["Name"],Daikin1["Zone4"]["Setpoint"])
+                color: 1,0,1,1
+                #background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone4"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone4"]["Using"]==0 else False
+                on_release: app.button_press("4")
+            Button:
+                id:lbl_zone5
+                text:"Zone 5: {}\nNhiệt Độ :{}".format(Daikin1["Zone5"]["Name"],Daikin1["Zone5"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone5"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone5"]["Using"]==0 else False
+                on_release: app.button_press("5")
+            Button:
+                id:lbl_zone6
+                text:"Zone 6: {}\nNhiệt Độ :{}".format(Daikin1["Zone6"]["Name"],Daikin1["Zone6"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone6"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone6"]["Using"]==0 else False
+                on_release: app.button_press("6")
+            Button:
+                id:lbl_zone7
+                text:"Zone 7: {}\nNhiệt Độ :{}".format(Daikin1["Zone7"]["Name"],Daikin1["Zone7"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone7"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone7"]["Using"]==0 else False
+                on_release: app.button_press("7")
+            Button:
+                id:lbl_zone8
+                text:"Zone 8: {}\nNhiệt Độ :{}".format(Daikin1["Zone8"]["Name"],Daikin1["Zone8"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone8"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone8"]["Using"]==0 else False
+                on_release: app.button_press("8")
+            Button:
+                id:lbl_zone9
+                text:"Zone 9: {}\nNhiệt Độ :{}".format(Daikin1["Zone9"]["Name"],Daikin1["Zone9"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone9"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone9"]["Using"]==0 else False
+                on_release: app.button_press("9")
+            Button:
+                id:lbl_zone10
+                text:"Zone 10: {}\nNhiệt Độ :{}".format(Daikin1["Zone10"]["Name"],Daikin1["Zone10"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone10"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone1"]["Using"]==0 else False
+                on_release: app.button_press("10")
+            Button:
+                id:lbl_zone11
+                text:"Zone 11: {}\nNhiệt Độ :{}".format(Daikin1["Zone11"]["Name"],Daikin1["Zone11"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone11"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone11"]["Using"]==0 else False
+                on_release: app.button_press("11")
+            Button:
+                id:lbl_zone12
+                text:"Zone 12: {}\nNhiệt Độ :{}".format(Daikin1["Zone12"]["Name"],Daikin1["Zone12"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone12"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone12"]["Using"]==0 else False
+                on_release: app.button_press("12")
+            Button:
+                id:lbl_zone13
+                text:"Zone 13: {}\nNhiệt Độ :{}".format(Daikin1["Zone13"]["Name"],Daikin1["Zone13"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone13"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone13"]["Using"]==0 else False
+                on_release: app.button_press("13")
+            Button:
+                id:lbl_zone14
+                text:"Zone 14: {}\nNhiệt Độ :{}".format(Daikin1["Zone14"]["Name"],Daikin1["Zone14"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone14"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone14"]["Using"]==0 else False
+                on_release: app.button_press("14")
+            Button:
+                id:lbl_zone15
+                text:"Zone 15: {}\nNhiệt Độ :{}".format(Daikin1["Zone15"]["Name"],Daikin1["Zone15"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone15"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone15"]["Using"]==0 else False
+                on_release: app.button_press("15")
+            Button:
+                id:lbl_zone16
+                text:"Zone 16: {}\nNhiệt Độ :{}".format(Daikin1["Zone16"]["Name"],Daikin1["Zone16"]["Setpoint"])
+                color: 1,0,1,1
+                background_color: (0.0, 0.0, 1.0, 0.0) if Daikin1["Zone16"]["Using"]==1 else (1,1,1)
+                disabled: True if Daikin1["Zone16"]["Using"]==0 else False
+                on_release: app.button_press("16")
+
+
+
+<CFloatLayout@FloatLayout+BackgroundColor>
+<CBoxLayout@BoxLayout+BackgroundColor>
+<CGridLayout@GridLayout+BackgroundColor>
+<CStackLayout@StackLayout+BackgroundColor>
+<CAnchorLayout@AnchorLayout+BackgroundColor>
+
+
+<BackgroundColor@Widget>
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    size_hint: .9, .9
+    canvas.before:
+        Color:
+            rgba: .2, .3, .4, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos

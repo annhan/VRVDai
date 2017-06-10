@@ -1,0 +1,43 @@
+#:import ip_address __main__.ip_address
+#:import ip_gateway __main__.ip_gateway
+ShowcaseScreen:
+    name: 'network'
+    fullscreen: True
+    BoxLayout:
+        height: '44sp'
+        Label:
+            text: 'IP '
+            font_size: 18
+            halign: 'left'
+            bcolor: 1,0,0,1
+        TextInput:
+            id: lbl_ip
+            multiline:False
+            font_size: 28
+            text: ip_address
+            disabled: True
+    BoxLayout:
+        Label:
+            text: 'gateway'
+            halign: 'left'
+            font_size: 18
+            bcolor: 0,1,0,1
+
+        TextInput:
+            id: lbl_gateway
+            multiline:False
+            font_size: 28
+            text:ip_gateway
+            disabled: True
+    BoxLayout:
+        Button:
+            id: button_setting_ip
+            text:"Setting Network"
+            background_color: (0.0, 0.0, 1.0, 1.0)
+            on_release: app.button_setting_ip()
+        Button:
+            id: button_setting_serial_code
+            text:"Setting Code"
+            background_color: (0.0, 0.0, 1.0, 1.0)
+            on_release: app.button_setting_serial_code()
+

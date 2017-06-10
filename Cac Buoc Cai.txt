@@ -1,0 +1,122 @@
+-------------------------------
+Minimal modbus ----------------
+-------------------------------
+sudo apt-get install python-pipy
+sudo pip install -U pyserial
+sudo pip install -U minimalmodbus
+------------------------------
+Cai mySQL ------------------------
+---------------------------------
+sudo apt-get install python-pip python-dev libmysqlclient-dev
+sudo apt-get install python-mysqldb
+sudo apt-get install mysql-server python-mysqldb
+----------------------------------
+Cai Flask ----------------------
+--------------------------------
+sudo apt-get install python-flask
+---------------------------------
+Cai Kivy ---------------------------
+------------------------------------
+WEB: https://github.com/mrichardson23/rpi-kivy-screen       https://kivy.org/docs/installation/installation-rpi.html
+
+
+sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
+   pkg-config libgl1-mesa-dev libgles2-mesa-dev \
+   python-setuptools libgstreamer1.0-dev git-core \
+   gstreamer1.0-plugins-{bad,base,good,ugly} \
+   gstreamer1.0-{omx,alsa} python-dev libmtdev-dev \
+   xclip
+
+sudo apt-get install git-core
+
+sudo pip install git+https://github.com/kivy/kivy.git@master
+
+
+
+-----------------------------------------------------------------------------
+Huong dan cai dat Database Python ----------------------------------------
+----------------------------------------------------------------------------
+
+Tao bang Database
+create database Daikin;
+Xem database da tao:
+show databases;
+
+Trang huong dan database:
+http://thuthuatvietnam.com/tao-database-va-user-mysql-bang-lenh-terminal.html
+
+--------------------------------------------------------------------------------
+Huong dan cai Wifi -----------------------------------------------------------
+--------------------------------------------------------------------------------
+Cai Wifi Raspberry 3
+
+sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
+
+network={
+   ssid="MyNetworkName"
+   psk="MyPaz0rdz"
+}
+
+Try ifdown wlan0
+    ifup wlan0
+---------------------------------
+ Static IP: ----------------------
+-----------------------------------
+sudo vi /etc/dhcpcd.conf
+
+interface eth0
+
+static ip_address=192.168.0.10/24
+static routers=192.168.0.1
+static domain_name_servers=192.168.0.1
+
+interface wlan0
+
+static ip_address=192.168.0.200/24
+static routers=192.168.0.1
+static domain_name_servers=192.168.0.1
+
+--------------------------------------
+Autoreconnect: -----------------------
+-------------------------------------
+sudo nano /etc/network/interfaces
+
+Thay doi
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+thanh
+wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+
+--------------------------------------
+Ma hoa Serial ------------------------
+---------------------------------------
+http://tools.sinhvienit.net/md5/ MD5 2 lan
+
+-------------------------------------------
+---------------------------------------------
+----------------------------------------------
+
+sudo chmod 777 /etc/wpa_supplicant/wpa_supplicant.conf
+
+https://raspberrypi.stackexchange.com/questions/4120/how-to-automatically-reconnect-wifi
+
+sudo chmod +x /home/pi/Daikin/reconnect.sh
+
+-------------------
+pip install wifi
+
+
+
+
+----------------
+
+Doio password : raspipw
+
+Taoj licj schedule reboot:
+
+sudo nano /etc/crontab
+
+auto chay chuong trinh
+
+sudo nano /etc/rc.local
+
+(sleep 60; sudo python /home/py/Daikin/Daikin.py) &
