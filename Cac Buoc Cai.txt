@@ -17,6 +17,7 @@ sudo apt-get install python-flask
 ---------------------------------
 Cai Kivy ---------------------------
 ------------------------------------
+Muon chay cam ung phai sua file config.ini và copy vào sudo cp ~/.kivy/config.ini /root/.kivy/config.ini
 WEB: https://github.com/mrichardson23/rpi-kivy-screen       https://kivy.org/docs/installation/installation-rpi.html
 
 
@@ -36,10 +37,12 @@ sudo pip install git+https://github.com/kivy/kivy.git@master
 -----------------------------------------------------------------------------
 Huong dan cai dat Database Python ----------------------------------------
 ----------------------------------------------------------------------------
+1.Login
 
-Tao bang Database
+mysql -u root -p
+2. Tao bang Database
 create database Daikin;
-Xem database da tao:
+3. Xem database da tao:
 show databases;
 
 Trang huong dan database:

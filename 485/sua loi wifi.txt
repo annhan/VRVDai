@@ -1,0 +1,7 @@
+sudo rfkill list all
+
+VỚi phiên bản Pi 3 b+ cần vô rasp-config chọn zone wifi 
+sudo raspi-config
+Choose option 4 Localization Options then 14 Change Wi-Fi Country and set your country. After a reboot, wlan0 will appear.sudo
+
+Sudo nano /etc/rc.local rebooot after 120s

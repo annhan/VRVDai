@@ -37,7 +37,7 @@ import hashlib
 #####################################################################################################
 bientruyen=0
 modbus_mod="rtu"
-modbus_boudrate=19200
+modbus_boudrate=9600
 modbus_timeout=0.2
 modbus_address=1
 co_tinhieu_HC2=0
@@ -1121,13 +1121,13 @@ class modbus(threading.Thread):
         self.instrument = minimalmodbus.Instrument(Port, 1)
         minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
         print(baudrate)
-        self.instrument.serial.baudrate = 19200 #baudrate
-        self.instrument.serial.timeout = 1.0 #timout
+        self.instrument.serial.baudrate = 9600 #baudrate
+        self.instrument.serial.timeout = 1.2 #timout
         self.instrument.debug = False
         self.instrument.precalculate_read_size = True
         self.instrument.serial.bytesize = 8
-        self.instrument.serial.parity = serial.PARITY_NONE
-        self.instrument.serial.stopbits = 2
+        self.instrument.serial.parity = serial.PARITY_EVEN
+        self.instrument.serial.stopbits = 1
         #self.instrument.debug = False
         #self.instrument.precalculate_read_size = True
 
@@ -1152,10 +1152,10 @@ class modbus(threading.Thread):
                 if co_tinhieu_HC2==1:
                     time.sleep(1)
                     co_tinhieu_HC2=0
-                    get_input()
+                    #get_input()
                     truyen_ve_HC()
                     _bientang = 1
-                if _bientang % 300 == 0:
+                if _bientang % 200 == 0:
                     #while dangtuyenmodbus!=0:
                        # time.sleep(0.1)
                     tam = 0
@@ -1163,7 +1163,7 @@ class modbus(threading.Thread):
                         tam = tam + 1
                         if tam > 100:
                             break
-                        time.sleep(0.1)
+                        time.sleep(0.05)
                     get_input()
                 if _bientang % 600 ==0:
                     truyen_ve_HC()
@@ -1215,30 +1215,32 @@ class modbus(threading.Thread):
                 time.sleep(1)
             _datasend = chararray_to_int(fanvolume, fandir, 6, status)
             print(zone,_datasend)
+	    Daikin1["Zone{}".format(zone_new)]["Status"]=status
             self.instrument.write_register(zone,_datasend ,numberOfDecimals=0, functioncode=16)
             print("OK SET STATUS")
         except:
             logging.warning('SET status')
             print ("loi set status")
-        if SHC2==1:
-            co_tinhieu_HC2=1
+        #if SHC2==1:
+        co_tinhieu_HC2=1
     def set_tempset(self, zone, temp,SHC2=0):
         global co_tinhieu_HC2
         zone_new=zone
         try:
             zone = 2002 + (zone - 1) * 3
-            infor = self.instrument.read_register(zone, numberOfDecimals=0, functioncode=3)
+            #infor = self.instrument.read_register(zone, numberOfDecimals=0, functioncode=3)
+            #infor=infor/10
             #if infor != Daikin1["Zone{}".format(zone_new)]["Setpoint"]:
             #    self.instrument.write_register(zone, Daikin1["Zone{}".format(zone_new)]["Setpoint"], functioncode=16)
             #    time.sleep(1)
-            print "Nhiet do",infor,temp
-            if infor != temp:
-                self.instrument.write_register(zone, temp, functioncode=16)
+            #print "Nhiet do",infor,temp
+	    Daikin1["Zone{}".format(zone_new)]["Setpoint"]=temp/10
+            self.instrument.write_register(zone, temp, functioncode=16)
         except:
             logging.warning('SET temp')
             print ("loi set nhiet do")
-        if SHC2==1:
-            co_tinhieu_HC2=1
+        #if SHC2==1:
+        co_tinhieu_HC2=1
     def set_mode_filterreset_statusopera(self, zone, mode=503, filterreset=503, statusopera=503,SHC2=0):
         global co_tinhieu_HC2
         zone_new=zone
@@ -1269,8 +1271,8 @@ class modbus(threading.Thread):
         except:
             logging.warning('SET MODE')
             print ("loi set mode")
-        if SHC2==1:
-            co_tinhieu_HC2=1
+        #if SHC2==1:
+        co_tinhieu_HC2=1
 
     ################
     ## Get status INPUT
@@ -1356,7 +1358,7 @@ def get_input():
     global co_tinhieu_HC2,Daikin1,dangtuyenmodbus
     dangtuyenmodbus=1
     try:
-        TCP_HC21.get_status_all()
+	TCP_HC21.get_status_all()
         for i in range(1, 17):
             if Daikin1["Zone{}".format(i)]["Using"]==1:
                 if dangtuyenmodbus==2:
@@ -1381,6 +1383,7 @@ def get_input():
     dangtuyenmodbus=0
 def truyen_ve_HC():
     try:
+	#print(Daikin1)
         hc2.setvariable("Daikin", Daikin1)
     except:
         logging.warning(' Truyen ve HC2')

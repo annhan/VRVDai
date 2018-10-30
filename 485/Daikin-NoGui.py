@@ -2,21 +2,7 @@
 from wifi import Cell, Scheme
 from time import time
 import time
-from kivy.app import App
 from os.path import dirname, join
-from kivy.lang import Builder
-import kivy.properties
-from kivy.clock import Clock
-from kivy.animation import Animation
-from kivy.uix.screenmanager import Screen
-from kivy.properties import NumericProperty, StringProperty, BooleanProperty,\
-    ListProperty,DictProperty,ObjectProperty
-from kivy import require
-from kivy.uix.popup import Popup
-from kivy.uix.gridlayout import GridLayout
-from kivy.config import Config
-Config.set('kivy', 'keyboard_mode', 'systemandmulti')
-require("1.8.0")
 from flask import Flask, render_template
 from flask import request
 import socket               # Import socket module
@@ -37,7 +23,7 @@ import hashlib
 #####################################################################################################
 bientruyen=0
 modbus_mod="rtu"
-modbus_boudrate=19200
+modbus_boudrate=9600
 modbus_timeout=0.2
 modbus_address=1
 co_tinhieu_HC2=0
@@ -526,590 +512,16 @@ def chararray_to_int(value0,value1,value2,value3):
 #########################################################
 ############ KiVy
 ##################################################################
-Builder.load_string('''
-<ConfirmPopup>:
-    cols:1
-	Label:
-		text: root.text
-	GridLayout:
-		cols: 2
-		size_hint_y: None
-		height: '44sp'
-		Button:
-			text: 'Close'
-			on_release: root.dispatch('on_answer', 'no')
-''')
 
-Builder.load_string('''
-#:import ip_address __main__.ip_address
-#:import ip_gateway __main__.ip_gateway
-<SettingIP>:
-    cols:1
-    setting_ip_gateway:setting_ip_gateway
-    setting_ip_ipaddress:setting_ip_ipaddress
-	GridLayout:
-		cols: 2
-		size_hint_y: None
-		height: '44sp'
-		Label:
-			text: 'IP address'
-        TextInput:
-            text:ip_address
-            id: setting_ip_ipaddress
-            multiline:False
-            font_size: 28
-	GridLayout:
-		cols: 2
-		size_hint_y: None
-		height: '44sp'
-		Label:
-			text: 'gateway'
-        TextInput:
-            text:ip_gateway
-            id: setting_ip_gateway
-            multiline:False
-            font_size: 28
-	GridLayout:
-		cols: 2
-		size_hint_y: None
-		height: '44sp'
-        Button:
-            text: 'OK'
-            on_release: root.dispatch('on_setting_network','OK')
-            on_press: root.on_click_setting_network('OK')
-        Button:
-            text: 'Cannel'
-            on_release: root.dispatch('on_setting_network','Cannel')
-''')
-
-Builder.load_string('''
-#:import mahoa2 __main__.mahoa2
-<Setting_serial_code>:
-    cols:1
-    setting_id_code:setting_id_code
-	GridLayout:
-		cols: 2
-		size_hint_y: None
-		height: '44sp'
-		Label:
-			text: 'Output'
-        TextInput:
-            text: root.text
-            multiline:False
-            font_size: 20
-            disabled: True
-	GridLayout:
-		cols: 2
-		size_hint_y: None
-		height: '44sp'
-		Label:
-			text: 'Input'
-        TextInput:
-            text: root.mahoa2
-            id: setting_id_code
-            multiline:False
-            font_size: 20
-	GridLayout:
-		cols: 2
-		size_hint_y: None
-		height: '44sp'
-        Button:
-            text: 'OK'
-            on_release: root.dispatch('on_setting_serial_code','OK')
-            on_press: root.on_click_setting_serial_code('OK')
-        Button:
-            text: 'Cannel'
-            on_release: root.dispatch('on_setting_serial_code','Cannel')
-''')
-
-Builder.load_string('''
-<SetupDaikin>:
-    cols:1
-	Label:
-	    id:Daikin_touch_status
-		text: root.status
-	GridLayout:
-	    cols: 2
-	    size_hint_y: None
-		height: '44sp'
-		Button:
-			text: 'ON'
-			on_release: root.dispatch('on_touch_control_daikin',root.vung, '1')
-		Button:
-		    text: 'OFF'
-			on_release: root.dispatch('on_touch_control_daikin',root.vung, '0')
-	Label:
-	    id:Daikin_touch_nhietdo
-		text: root.nhietdo
-		height: '44sp'
-	GridLayout:
-	    cols: 4
-	    size_hint_y: None
-		height: '88sp'
-	    Button:
-			text: '18'
-			on_release: root.dispatch('on_touch_control_daikin_t',root.vung, '180')
-		Button:
-		    text: '19'
-			on_release: root.dispatch('on_touch_control_daikin_t',root.vung, '190')
-	    Button:
-			text: '20'
-			on_release: root.dispatch('on_touch_control_daikin_t',root.vung, '200')
-		Button:
-		    text: '21'
-			on_release: root.dispatch('on_touch_control_daikin_t',root.vung, '210')
-	    Button:
-			text: '22'
-			on_release: root.dispatch('on_touch_control_daikin_t',root.vung, '220')
-		Button:
-		    text: '23'
-			on_release: root.dispatch('on_touch_control_daikin_t',root.vung, '230')
-	    Button:
-			text: '24'
-			on_release: root.dispatch('on_touch_control_daikin_t',root.vung, '240')
-		Button:
-		    text: '25'
-			on_release: root.dispatch('on_touch_control_daikin_t',root.vung, '250')
-    Label:
-        id:Daikin_touch_mode
-		text: root.chedom
-		height: '44sp'
-	GridLayout:
-	    cols: 5
-	    size_hint_y: None
-		height: '44sp'
-	    Button:
-			text: 'Cool'
-			on_release: root.dispatch('on_touch_control_daikin_mode',root.vung, '2')
-		Button:
-		    text: 'FAN'
-			on_release: root.dispatch('on_touch_control_daikin_mode',root.vung, '0')
-	    Button:
-			text: 'DRY'
-			on_release: root.dispatch('on_touch_control_daikin_mode',root.vung, '7')
-	    Button:
-			text: 'OFF'
-			on_release: root.dispatch('on_touch_control_daikin_mode',root.vung, '6')
-	GridLayout:
-		cols: 2
-		size_hint_y: None
-		height: '44sp'
-		Button:
-			text: 'Exit'
-			on_release: root.dispatch('on_answer', 'no')
-''')
-
-class ShowcaseScreen(Screen):
-    global Daikin1,status_lock
-    fullscreen = BooleanProperty(False)
-    def add_widget(self, *args):
-        Clock.schedule_once(self.update, 1)
-        if 'content' in self.ids:
-            return self.ids.content.add_widget(*args)
-            #return super(self.ids.content).add_widget(*args)
-        return super(ShowcaseScreen, self).add_widget(*args)
-##########################################
-### Update main page
-##########################################
-    def update(self,*args):
-        global Daikin1,ip_address,ip_gateway,status_lock
-        try:
-            if self.name=="infor":
-                for i in range(1, 17):
-                    self.ids['lbl_zone{}'.format(i)].text="Zone {}: {}\nStatus:{}\nt :{} *C".format(i,Daikin1["Zone{}".format(i)]["Name"],"ON" if Daikin1["Zone{}".format(i)]["Status"]==1 else "OFF",Daikin1["Zone{}".format(i)]["Setpoint"])
-                if status_lock !=0:
-                    #print("UN_LOCK")
-                    for i in range(1, 17):
-                        self.ids['lbl_zone{}'.format(i)].disabled = True if Daikin1["Zone{}".format(i)]["Using"]==0 else False
-                        self.ids['lbl_zone{}'.format(i)].background_color = (1.0, 1.0, 0.0, 1.0)
-                else:
-                    #print("LOCK")
-                    for i in range(1, 17):
-                        self.ids['lbl_zone{}'.format(i)].disabled = True
-            elif self.name=="network":
-                self.ids.lbl_ip.text = "{}".format(ip_address)
-                self.ids.lbl_gateway.text = "{}".format(ip_gateway)
-                self.ids.button_setting_ip.disabled= False if status_lock!=0 else True
-                self.ids.button_setting_serial_code.disabled = False if status_lock != 0 else True
-        except:
-            logging.debug('Error Update ShowcaseScreen')
-        Clock.schedule_once(self.update, 2)
-
-
-class ConfirmPopup(GridLayout):
-    text = StringProperty()
-    def __init__(self, **kwargs):
-        self.register_event_type('on_answer')
-        super(ConfirmPopup, self).__init__(**kwargs)
-    def on_answer(self, *args):
-        pass
-
-class Setting_serial_code(GridLayout):
-    global so_serial
-    text = StringProperty()
-    mahoa2 = StringProperty()
-    print(text)
-    def __init__(self, **kwargs):
-        self.register_event_type('on_setting_serial_code')
-        super(Setting_serial_code, self).__init__(**kwargs)
-    def on_setting_serial_code(self, *args):
-        pass
-    def on_click_setting_serial_code(self, bien):
-
-        if bien == "OK":
-            self.id_code = str(self.setting_id_code.text)
-            if len(self.id_code) < 23:
-                print("Khong gia tri IP")
-            else:
-                print "SETTING IP", self.id_code
-                update_database("UPDATE Serial_Raspberry SET So_Serial='{}'".format(self.id_code))
-        print("A")
 ###########################
 ## Class Setting Ip Pgae
 ###########################
-class SettingIP(GridLayout):
-    text = StringProperty()
-    def __init__(self, **kwargs):
-        self.register_event_type('on_setting_network')
-        super(SettingIP, self).__init__(**kwargs)
-    def on_setting_network(self, *args):
-        pass
-    def on_click_setting_network(self, bien):
-        try:
-            if bien=="OK":
-                self.ip=str(self.setting_ip_ipaddress.text)
-                self.gateway=str(self.setting_ip_gateway.text)
-                #print "SETTING IP", self.ip, self.gateway
-                if len(self.ip)<7 :
-                    print("Khong gia tri IP")
-                elif len(self.gateway)<7:
-                    print ("Khong gia tri Gateway")
-                else:
-                    print "SETTING IP", self.ip,self.gateway
-                    update_database("UPDATE infor_network SET ip='{}',gateway= '{}',subnet= '{}'".format(self.ip, self.gateway,"255.255.255.0"))
-                    f = open("/etc/dhcpcd.conf", "r+")
-                    d = f.readlines()
-                    f.seek(0)
-                    for i in d:
-                        if "interface eth0" in i:
-                            f.write(i)
-                            break
-                        else:
-                            f.write(i)
-                    f.write("static ip_address={}/24\r\n".format(self.ip))
-                    f.write("static routers={}\r\n".format(self.gateway))
-                    f.write("static domain_nam_servers=8.8.8.8\r\n")
-                    f.truncate()
-                    f.close()
-        except:
-            logging.debug('Error on_click_setting_network')
+
 ###############################
 ### Class control Daikin
 ##################################
-class SetupDaikin(GridLayout):
-    global exit_popup_daikin
-    vung=StringProperty()
-    nhietdo = StringProperty()
-    status = StringProperty()
-    chedom = StringProperty()
-    def __init__(self, **kwargs):
-        self.register_event_type('on_answer')
-        self.register_event_type('on_touch_control_daikin')
-        self.register_event_type('on_touch_control_daikin_t')
-        self.register_event_type('on_touch_control_daikin_mode')
-        Clock.schedule_once(self.update, 1)
-        super(SetupDaikin, self).__init__(**kwargs)
-
-    def on_answer(self, *args):
-        pass
-    def on_touch_control_daikin(self, *args):
-        pass
-    def on_touch_control_daikin_t(self, *args):
-        pass
-    def on_touch_control_daikin_mode(self, *args):
-        pass
-    def update(self,*args):
-        global exit_popup_daikin
-        try:
-            self.ids.Daikin_touch_status.text = "Status: {}".format("ON" if Daikin1["Zone{}".format(self.vung)]["Status"]==1 else "OFF")
-            self.ids.Daikin_touch_nhietdo.text ="T : {}".format(Daikin1["Zone{}".format(self.vung)]["Setpoint"])
-            self.ids.Daikin_touch_mode.text ="Mode :{}".format(Daikin1["Zone{}".format(self.vung)]["Mode"])
-        except:
-            logging.debug('Error update Setup Daikin')
-        if exit_popup_daikin==1:
-            Clock.schedule_once(self.update, 2)
-####################################
 ## MAIN SCREEN ####################
 ###################################
-class ShowcaseApp(App):
-    global Daikin1,time_begin,time_end,status_lock,exit_popup_daikin
-    index = NumericProperty(-1)
-    current_title = StringProperty()
-    dungmaserial=NumericProperty()
-    time = NumericProperty(0)
-    show_sourcecode = BooleanProperty(False)
-    sourcecode = StringProperty()
-    screen_names = ListProperty([])
-    hierarchy = ListProperty([])
-    _change = DictProperty(Daikin1)
-    lbl_zone1=ObjectProperty()
-    def build(self):
-        global Daikin1
-        self.title = 'An Nhan'
-        Clock.schedule_interval(self._update_clock, 1 / 60.)
-        self.screens = {}
-        self.available_screens = sorted(['infor', 'network'])
-        self.screen_names = self.available_screens
-        curdir = dirname(__file__)
-        self.available_screens = [join(curdir, 'data', 'screens',
-            '{}.kv'.format(fn).lower()) for fn in self.available_screens]
-        print self.available_screens
-        self.go_next_screen()
-        Clock.schedule_once(self.update, 1)
-    def update(self,*args):
-        global Daikin1
-#########################################
-## Nhan chọn các vùng Online Daikin #####
-##########################################
-    def button_press(self,zone):
-        global exit_popup_daikin
-        try:
-            self.zone=zone
-            exit_popup_daikin=1
-            content = SetupDaikin(vung=self.zone,status="Status: {}".format("ON" if Daikin1["Zone{}".format(self.zone)]["Status"]==1 else "OFF"),nhietdo="T : {}".format(Daikin1["Zone{}".format(self.zone)]["Temp"]),chedom="Mode")
-            content.bind(on_answer=self._on_answer)
-            content.bind(on_touch_control_daikin=self._touch_control_daikin)
-            content.bind(on_touch_control_daikin_t=self._touch_control_daikin_t)
-            content.bind(on_touch_control_daikin_mode=self._touch_control_daikin_mode)
-            self.popup = Popup(title="Zone : {} , {}".format(self.zone,Daikin1["Zone{}".format(self.zone)]["Name"]),
-                               content=content,
-                               size_hint=(None, None),
-                               size=(600, 400),
-                               auto_dismiss=True)
-            self.popup.open()
-        except:
-            logging.debug('Error button press')
-    #############################
-    ## Khi nhấn điều khiển ON/OFF Daikin
-    ###################################
-    def _touch_control_daikin(self, instance, answer,answer1):
-        global dangtuyenmodbus, dangtruyenmodbus_HC2, dungmaserial
-        try:
-            dangtruyenmodbus_HC2 = 1
-            # co_tinhieu_HC2 = 1
-            while dangtuyenmodbus != 0:
-                dangtuyenmodbus = 2
-                time.sleep(0.1)
-            TCP_HC21.set_status_forcusstatus_fandir_fanvolume(int(answer), int(answer1), 503, 503, 503, 1)
-            print(answer,answer1)
-        except:
-            logging.debug('Error _touch_control_daikin')
-    ########################################
-    ## Khi nhấn chọn nhiệt độ
-    #####################################
-    def _touch_control_daikin_t(self, instance, answer,answer1):
-        global dangtuyenmodbus, dangtruyenmodbus_HC2, dungmaserial
-        try:
-            dangtruyenmodbus_HC2 = 1
-            # co_tinhieu_HC2 = 1
-            while dangtuyenmodbus != 0:
-                dangtuyenmodbus = 2
-                time.sleep(0.1)
-            TCP_HC21.set_tempset(int(answer), int(answer1), 1)
-            print(answer,answer1)
-        except:
-            logging.debug('Error _touch_control_daikin_t')
-    #############################
-    ## Nhấn chọn mode
-    #############################
-    def _touch_control_daikin_mode(self, instance, answer,answer1):
-        global dangtuyenmodbus, dungmaserial
-        try:
-        # co_tinhieu_HC2 = 1
-            while dangtuyenmodbus != 0:
-                dangtuyenmodbus = 2
-                time.sleep(0.1)
-            TCP_HC21.set_mode_filterreset_statusopera(int(answer), int(answer1), 503, 503, 1)
-            print(answer,answer1)
-        except:
-            logging.debug('Error _touch_control_daikin_mode')
-###############################
-## Button Setting IP
-##########################################
-    def button_setting_ip(self):
-        try:
-            global exit_popup_daikin
-            exit_popup_daikin=1
-            content = SettingIP(text="Ds")
-            content.bind(on_setting_network=self._on_setting_network)
-            self.popup = Popup(title="Setting IP",
-                               content=content,
-                               size_hint=(None, None),
-                               size=(450, 200),
-                               auto_dismiss=True)
-            self.popup.open()
-        except:
-            logging.debug('Error button_setting_ip')
-    def _on_setting_network(self,instance, bien):
-        self.popup.dismiss()
-
-        ###############################
-        ## Button Setting Mã code
-        ##########################################
-    def button_setting_serial_code(self):
-        print ("AA")
-        #try:
-        global so_serial,mahoa2,ma_serial
-        content = Setting_serial_code(text=so_serial,mahoa2=ma_serial)
-        content.bind(on_setting_serial_code=self._on_setting_serial_code)
-        self.popup = Popup(title="Setting Code",
-                           content=content,
-                           size_hint=(None, None),
-                           size=(800, 200),
-                           auto_dismiss=True)
-        self.popup.open()
-        #except:
-            #print("Eroor")
-            #logging.debug('Error button_setting_ip')
-
-    def _on_setting_serial_code(self, instance, bien):
-        self.popup.dismiss()
-##########################################
-    def on_pause(self):
-        return True
-    def on_resume(self):
-        pass
-    def on_current_title(self, instance, value):
-        self.root.ids.spnr.text = value
-    def go_previous_screen(self):
-        global dungmaserial
-        self.index = (self.index - 1) % len(self.available_screens)
-        screen = self.load_screen(self.index)
-        sm = self.root.ids.sm
-        sm.switch_to(screen, direction='right')
-        self.current_title = screen.name
-        self.dungmaserial=dungmaserial
-        self.update_sourcecode()
-    def go_next_screen(self):
-        global dungmaserial
-        try:
-            self.index = (self.index + 1) % len(self.available_screens)
-            screen = self.load_screen(self.index)
-            sm = self.root.ids.sm
-            print( self.index,screen,sm)
-            sm.switch_to(screen, direction='left')
-            self.current_title = screen.name
-            self.dungmaserial = dungmaserial
-            self.update_sourcecode()
-        except:
-            logging.debug('Error go_next_screen')
-    def go_screen(self, idx):
-        try:
-            self.index = idx
-            self.root.ids.sm.switch_to(self.load_screen(idx), direction='left')
-            self.update_sourcecode()
-        except:
-            logging.debug('Error go_screen')
-############################################
-##### Kiểm tra xem có phải nhấn mở khóa
-#############################################
-    def go_hierarchy_previous(self):
-        global time_begin,time_end,status_lock
-        try:
-            time_end=time.time()
-            diff =int(time_end - time_begin)
-            if diff >2:
-                status_lock=~status_lock
-                content = ConfirmPopup(text='Ban')
-                if status_lock != 0:
-                    content = ConfirmPopup(text='Đã Mở')
-                else:
-                    content = ConfirmPopup(text='Đã Tắt')
-                content.bind(on_answer=self._on_answer)
-                self.popup = Popup(title="Thông báo",
-                                   content=content,
-                                   size_hint=(None, None),
-                                   size=(200, 200),
-                                   auto_dismiss=True)
-                self.popup.open()
-            ahr = self.hierarchy
-            if len(ahr) == 1:
-                return
-            if ahr:
-                ahr.pop()
-            if ahr:
-                idx = ahr.pop()
-                self.go_screen(idx)
-        except:
-            logging.debug('Error go_hierarchy_previous')
-##########################
-### Su ly PopUp  ########
-##########################
-    def _on_answer(self, instance, answer):
-        try:
-            global exit_popup_daikin
-            print "USER ANSWER: ", repr(answer)
-            exit_popup_daikin=0
-            self.popup.dismiss()
-        except:
-            logging.debug('Error _on_answer')
-
-###########################################################
-##########################################################
-    def nhan_ps(self):
-        global time_begin
-        time_begin=time.time()
-
-    def load_screen(self, index):
-        if index in self.screens:
-            return self.screens[index]
-        screen = Builder.load_file(self.available_screens[index])
-
-        self.screens[index] = screen
-        return screen
-
-    def read_sourcecode(self):
-        fn = self.available_screens[self.index]
-        with open(fn) as fd:
-            return fd.read()
-
-    def toggle_source_code(self):
-        self.show_sourcecode = not self.show_sourcecode
-        if self.show_sourcecode:
-            height = self.root.height * .3
-        else:
-            height = 0
-
-        Animation(height=height, d=.3, t='out_quart').start(
-                self.root.ids.sv)
-
-        self.update_sourcecode()
-
-    def update_sourcecode(self):
-        if not self.show_sourcecode:
-            self.root.ids.sourcecode.focus = False
-            return
-        self.root.ids.sourcecode.text = "CTY NHHH KIM SƠN TIẾN\nPHẠM AN NHÀN" #self.read_sourcecode()
-        self.root.ids.sv.scroll_y = 1
-
-
-    def showcase_gridlayout(self, layout):
-        print("a")
-
-
-    def _update_clock(self, dt):
-        self.time = time.time()
-
-
-class Kivyapp(threading.Thread):
-    global Daikin1
-    def __init__(self):
-        threading.Thread.__init__(self)
-
-    def run(self):
-        ShowcaseApp().run()
-
-
 #################################################################################################################
 ## Modbus ####################################################################################################
 ###############################################################################################################
@@ -1121,13 +533,13 @@ class modbus(threading.Thread):
         self.instrument = minimalmodbus.Instrument(Port, 1)
         minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
         print(baudrate)
-        self.instrument.serial.baudrate = 19200 #baudrate
-        self.instrument.serial.timeout = 1.0 #timout
+        self.instrument.serial.baudrate = 9600 #baudrate
+        self.instrument.serial.timeout = 1.2 #timout
         self.instrument.debug = False
         self.instrument.precalculate_read_size = True
         self.instrument.serial.bytesize = 8
-        self.instrument.serial.parity = serial.PARITY_NONE
-        self.instrument.serial.stopbits = 2
+        self.instrument.serial.parity = serial.PARITY_EVEN
+        self.instrument.serial.stopbits = 1
         #self.instrument.debug = False
         #self.instrument.precalculate_read_size = True
 
@@ -1152,10 +564,10 @@ class modbus(threading.Thread):
                 if co_tinhieu_HC2==1:
                     time.sleep(1)
                     co_tinhieu_HC2=0
-                    get_input()
+                    #get_input()
                     truyen_ve_HC()
                     _bientang = 1
-                if _bientang % 300 == 0:
+                if _bientang % 200 == 0:
                     #while dangtuyenmodbus!=0:
                        # time.sleep(0.1)
                     tam = 0
@@ -1163,7 +575,7 @@ class modbus(threading.Thread):
                         tam = tam + 1
                         if tam > 100:
                             break
-                        time.sleep(0.1)
+                        time.sleep(0.05)
                     get_input()
                 if _bientang % 600 ==0:
                     truyen_ve_HC()
@@ -1215,30 +627,32 @@ class modbus(threading.Thread):
                 time.sleep(1)
             _datasend = chararray_to_int(fanvolume, fandir, 6, status)
             print(zone,_datasend)
+	    Daikin1["Zone{}".format(zone_new)]["Status"]=status
             self.instrument.write_register(zone,_datasend ,numberOfDecimals=0, functioncode=16)
             print("OK SET STATUS")
         except:
             logging.warning('SET status')
             print ("loi set status")
-        if SHC2==1:
-            co_tinhieu_HC2=1
+        #if SHC2==1:
+        co_tinhieu_HC2=1
     def set_tempset(self, zone, temp,SHC2=0):
         global co_tinhieu_HC2
         zone_new=zone
         try:
             zone = 2002 + (zone - 1) * 3
-            infor = self.instrument.read_register(zone, numberOfDecimals=0, functioncode=3)
+            #infor = self.instrument.read_register(zone, numberOfDecimals=0, functioncode=3)
+            #infor=infor/10
             #if infor != Daikin1["Zone{}".format(zone_new)]["Setpoint"]:
             #    self.instrument.write_register(zone, Daikin1["Zone{}".format(zone_new)]["Setpoint"], functioncode=16)
             #    time.sleep(1)
-            print "Nhiet do",infor,temp
-            if infor != temp:
-                self.instrument.write_register(zone, temp, functioncode=16)
+            #print "Nhiet do",infor,temp
+	    Daikin1["Zone{}".format(zone_new)]["Setpoint"]=temp/10
+            self.instrument.write_register(zone, temp, functioncode=16)
         except:
             logging.warning('SET temp')
             print ("loi set nhiet do")
-        if SHC2==1:
-            co_tinhieu_HC2=1
+        #if SHC2==1:
+        co_tinhieu_HC2=1
     def set_mode_filterreset_statusopera(self, zone, mode=503, filterreset=503, statusopera=503,SHC2=0):
         global co_tinhieu_HC2
         zone_new=zone
@@ -1269,8 +683,8 @@ class modbus(threading.Thread):
         except:
             logging.warning('SET MODE')
             print ("loi set mode")
-        if SHC2==1:
-            co_tinhieu_HC2=1
+        #if SHC2==1:
+        co_tinhieu_HC2=1
 
     ################
     ## Get status INPUT
@@ -1356,7 +770,7 @@ def get_input():
     global co_tinhieu_HC2,Daikin1,dangtuyenmodbus
     dangtuyenmodbus=1
     try:
-        TCP_HC21.get_status_all()
+	TCP_HC21.get_status_all()
         for i in range(1, 17):
             if Daikin1["Zone{}".format(i)]["Using"]==1:
                 if dangtuyenmodbus==2:
@@ -1381,6 +795,7 @@ def get_input():
     dangtuyenmodbus=0
 def truyen_ve_HC():
     try:
+	#print(Daikin1)
         hc2.setvariable("Daikin", Daikin1)
     except:
         logging.warning(' Truyen ve HC2')
@@ -1389,6 +804,7 @@ def serial_ports():
     try:
         ports = list(serial.tools.list_ports.comports())
         for port_no, description, address in ports:
+	    print(description)
             if 'USB' in description:
                 return port_no
         return ("NO")
@@ -1856,13 +1272,17 @@ def getserial():
     return cpuserial
 #####################################
 def ssid_discovered():
-    Cells = Cell.all('wlan0')
-    wifi_info = ''
-    for current in range(len(Cells)):
-        wifi_info +=  Cells[current].ssid + "\n"
-    wifi_info+="!"
-    print wifi_info
-    return wifi_info
+    try:
+    	Cells = Cell.all('wlan0')
+    	wifi_info = ''
+    	for current in range(len(Cells)):
+        	wifi_info +=  Cells[current].ssid + "\n"
+    	wifi_info+="!"
+    	print wifi_info
+    	return wifi_info
+    except:
+	print "wifi discovered error"
+	return "wifi discovered error, pls check manual"
 ########################################
 ####################################
 if __name__ == '__main__':
@@ -1873,17 +1293,18 @@ if __name__ == '__main__':
     bien = serial_ports()
     while bien=="NO":
         bien = serial_ports()
+	print("Khong co Serial")
+	time.sleep(10)
     #delete_db()
     load_database()
     so_serial=getserial()
-
     mahoa1=hashlib.md5(so_serial).hexdigest()
     mahoa2=hashlib.md5(mahoa1).hexdigest()
     logging.debug('Daikin begin')
     infor_wifi_found=ssid_discovered()
-    #print "NHAN",mahoa2
-    #print(so_serial,ma_serial)
-    #print(len(str(mahoa2)),len(str(ma_serial)))
+    print "NHAN",mahoa2
+    print(so_serial,ma_serial)
+    print(len(str(mahoa2)),len(str(ma_serial)))
     if str(ma_serial) == str(mahoa2):
         #print("dung serial")
         TCP_HC21 = modbus(serial_ports(),modbus_address,modbus_boudrate,modbus_timeout)
@@ -1894,8 +1315,6 @@ if __name__ == '__main__':
         TCP_HC21.start()
         dungmaserial=1
     hc2 = HC2.hc2(HC2_user, HC2_password, ip_HC2)
-    Kivy = Kivyapp()
-    Kivy.start()
     TCP_HC2 = server()
     TCP_HC2.start()
     #KivyCatalogApp().run()
