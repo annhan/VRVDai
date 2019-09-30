@@ -1,23 +1,23 @@
 -------------------------------
-Minimal modbus ----------------
+Install Minimal modbus ----------------
 -------------------------------
 sudo apt-get install python-pipy
 sudo pip install -U pyserial
 sudo pip install -U minimalmodbus
 ------------------------------
-Cai mySQL ------------------------
+Install mySQL ------------------------
 ---------------------------------
 sudo apt-get install python-pip python-dev libmysqlclient-dev
 sudo apt-get install python-mysqldb
 sudo apt-get install mysql-server python-mysqldb
 ----------------------------------
-Cai Flask ----------------------
+Install Flask ----------------------
 --------------------------------
 sudo apt-get install python-flask
 ---------------------------------
-Cai Kivy ---------------------------
+Install Kivy ---------------------------
 ------------------------------------
-Muon chay cam ung phai sua file config.ini v‡ copy v‡o sudo cp ~/.kivy/config.ini /root/.kivy/config.ini
+Muon chay cam ung phai sua file config.ini v√† copy v√†o sudo cp ~/.kivy/config.ini /root/.kivy/config.ini
 WEB: https://github.com/mrichardson23/rpi-kivy-screen       https://kivy.org/docs/installation/installation-rpi.html
 
 
@@ -35,21 +35,21 @@ sudo pip install git+https://github.com/kivy/kivy.git@master
 
 
 -----------------------------------------------------------------------------
-Huong dan cai dat Database Python ----------------------------------------
+My SQL Database Python ----------------------------------------
 ----------------------------------------------------------------------------
 1.Login
 
 mysql -u root -p
-2. Tao bang Database
+2. Create Database:
 create database Daikin;
-3. Xem database da tao:
+3. Show database:
 show databases;
 
 Trang huong dan database:
 http://thuthuatvietnam.com/tao-database-va-user-mysql-bang-lenh-terminal.html
 
 --------------------------------------------------------------------------------
-Huong dan cai Wifi -----------------------------------------------------------
+Install Wifi -----------------------------------------------------------
 --------------------------------------------------------------------------------
 Cai Wifi Raspberry 3
 
@@ -114,11 +114,11 @@ pip install wifi
 
 Doio password : raspipw
 
-Taoj licj schedule reboot:
+- Reboot Schedule
 
 sudo nano /etc/crontab
 
-auto chay chuong trinh
+- AutoRunning Py script:
 
 sudo nano /etc/rc.local
 
